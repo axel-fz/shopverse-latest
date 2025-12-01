@@ -14,7 +14,7 @@ export default function ContactPage() {
     message: "",
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e:React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -189,7 +189,7 @@ export default function ContactPage() {
                   name="message"
                   value={formData.message}
                   onChange={handleChange}
-                  row="5"
+                  rows={5}
                   placeholder="Enter your message..."
                   className="w-full px-4 py-3 border rounded-lg resize-none focus:ring-2 focus:ring-blue-500"
                 />
