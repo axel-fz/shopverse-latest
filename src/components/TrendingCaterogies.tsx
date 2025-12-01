@@ -1,8 +1,8 @@
 "use client"
 import React from "react";
-import Image from "next/image";
-import { FaCircleArrowRight } from "react-icons/fa6";
-import { motion } from "framer-motion";
+/* import Image from "next/image";
+ *//* import { FaCircleArrowRight } from "react-icons/fa6";
+ */import { motion } from "framer-motion";
 import {scrollIntoViewVariant } from "@/animation/variants"
 import HeaderComponent from "./HeaderComponent";
 
@@ -40,7 +40,7 @@ const TrendingCategories = () => {
             key={category.id}
             className="cursor-pointer flex flex-col gap-3 items-center text-center"
           >
-            <Image
+            <img
               src={category.imageUrl}
               alt={category.name}
               width={200}
