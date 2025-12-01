@@ -53,7 +53,7 @@ const HeroComponent = () => {
 
         {/* Watch Images */}
         <motion.div
-          className="absolute right-[180px] md:right-[350px] lg:right-[250px] md:bottom-[-10] bottom-[-5] w-[40%] md:w-[30%] lg:bottom-[-30]"
+          className="absolute right-[180px] md:right-[350px] lg:right-[250px] md:bottom-[-10] bottom-[-5] w-[40%] md:w-[30%] lg:bottom-[50]"
           initial="hidden"
           animate="visible"
           variants={imageVariants}
@@ -68,7 +68,7 @@ const HeroComponent = () => {
         </motion.div>
 
         <motion.div
-          className="absolute right-[20px] sm:right-[20px]  md:right-0 lg:right-[0px] md:bottom-[-10] bottom-[-5] w-[22%] md:w-[17%] lg:bottom-[-50]"
+          className="absolute right-[20px] sm:right-[20px]  md:right-0 lg:right-[0px] md:bottom-[-10] bottom-[-5] w-[22%] md:w-[17%] lg:bottom-[50]"
           initial="hidden"
           animate="visible"
           variants={imageVariants}
