@@ -16,11 +16,11 @@ interface Category {
 
 const TrendingCategories = () => {
   const categories: Category[] = [
-    { id: 1, name: "Mobiles", imageUrl: "/trendingCategories/phonee.png" },
-    { id: 2, name: "Laptops", imageUrl: "/trendingCategories/laptopp.png" },
-    { id: 3, name: "Headphones", imageUrl: "/trendingCategories/headphonee.png" },
-    { id: 4, name: "Monitor & TVs", imageUrl: "/trendingCategories/tvv.png" },
-    { id: 5, name: "Speakers", imageUrl: "/trendingCategories/speakerr.png" },
+    { id: 1, name: "Mobiles", imageUrl: "/phonee.png" },
+    { id: 2, name: "Laptops", imageUrl: "/laptopp.png" },
+    { id: 3, name: "Headphones", imageUrl: "/headphonee.png" },
+    { id: 4, name: "Monitor & TVs", imageUrl: "/tvv.png" },
+    { id: 5, name: "Speakers", imageUrl: "/speakerr.png" },
   ];
 
   return (
@@ -40,7 +40,7 @@ const TrendingCategories = () => {
             key={category.id}
             className="cursor-pointer flex flex-col gap-3 items-center text-center"
           >
-            <Image
+            <img
               src={category.imageUrl}
               alt={category.name}
               width={200}
