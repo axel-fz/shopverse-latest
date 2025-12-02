@@ -42,7 +42,7 @@ const Navbar = () => {
     <nav
       className={`${
         scrolled
-          ? "w-[90%] md:w-[70%]  top-10  left-[7%] right-[15%] md:left-[15%]  rounded-full ring ring-gray-300"
+          ? "w-[90%] md:w-[70%]  top-10 gap-2  left-[7%] right-[15%] md:left-[15%]  rounded-full ring ring-gray-300"
           : "w-full top-0"
       } fixed h-[70px] px-5 sm:px-10 flex items-center justify-between transition-all duration-300 shadow-sm backdrop-blur-md z-50`}
     >
