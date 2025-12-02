@@ -8,6 +8,8 @@ import { motion} from "framer-motion";
 import {
   buttonVariants,
 } from "@/animation/variants";
+import { useStoreFavorites } from "@/store/favorite.store";
+import { useAddtoCard } from "@/store/addToCard.store";
 
 
 interface ProductCardProps {
@@ -15,6 +17,8 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
+    const {selectedFavoriteIds, toggleHeartIcon} = useStoreFavorites()
+    const {selectedCardIds, toggleCard} = useAddtoCard()
   return (
     <motion.div
     initial = 'hidden'
@@ -34,11 +38,15 @@ const ProductCard = ({ product }: ProductCardProps) => {
         <h2>${product.price}</h2>
         <span className="line-through text-gray-400 ">{product.oldPrice}</span>
       </div>
-      <button className="bg-orange-500 text-white px-5 py-3 rounded-full absolute bottom-2 transition-all opacity-0 duration-300 group-hover:translate-y-0 translate-y-5 group-hover:opacity-100">
+      <button
+      onClick={() => toggleCard(product._id)}
+      className={`${!selectedCardIds.includes(product._id) ? 'bg-orange-500' : 'bg-gray-400'}  text-white px-5 font-bold py-3 rounded-full absolute bottom-2 transition-all opacity-0 duration-300 group-hover:translate-y-0 translate-y-5 group-hover:opacity-100`}>
         Add to Card
       </button>
-      <div className="bg-[#ff6900]  p-2 absolute rounded-full top-5 right-5 flex items-center justify-center">
-        <TiHeartFullOutline size={30} color="#fff" className=" transition-all hover:scale-125"/>
+      <div className={`${!selectedFavoriteIds.includes(product._id)? 'bg-[#ff6900]' : 'bg-gray-400' }  p-2 absolute rounded-full top-5 right-5 flex items-center justify-center`}>
+        <TiHeartFullOutline
+        onClick={() => toggleHeartIcon(product._id)}
+        size={30} color={`${!selectedFavoriteIds.includes(product._id) ? "#fff" : 'red'}`} className=" transition-all hover:scale-125"/>
 
       </div>
     </motion.div>

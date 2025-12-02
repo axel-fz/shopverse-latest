@@ -13,6 +13,9 @@ import {
   SignedOut,
   UserButton,
 } from "@clerk/nextjs";
+import { useStoreFavorites } from "@/store/favorite.store";
+import { ModeToggle } from "./toggleDark";
+import { useAddtoCard } from "@/store/addToCard.store";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -32,12 +35,14 @@ const Navbar = () => {
 
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
+  const {selectedFavoriteIds} = useStoreFavorites()
+  const {selectedCardIds} = useAddtoCard()
+  
   return (
     <nav
       className={`${
         scrolled
-          ? "w-[90%] md:w-[70%] top-10 left-1/2 -translate-x-1/2 rounded-full ring ring-gray-300"
+          ? "w-[90%] md:w-[70%]  top-10  left-[7%] right-[15%] md:left-[15%]  rounded-full ring ring-gray-300"
           : "w-full top-0"
       } fixed h-[70px] px-5 sm:px-10 flex items-center justify-between transition-all duration-300 shadow-sm backdrop-blur-md z-50`}
     >
@@ -53,7 +58,7 @@ const Navbar = () => {
             className={`${
               path === link.href
                 ? "text-amber-600 font-bold"
-                : "text-gray-900"
+                : "text-gray-900 dark:text-white"
             } font-medium hover:text-orange-500 transition`}
           >
             {link.name}
@@ -76,18 +81,18 @@ const Navbar = () => {
         {/* Desktop Icons */}
         <div className="hidden md:flex items-center gap-4">
           <div className="relative cursor-pointer">
-            <FaRegHeart size={22} />
+            <FaRegHeart  size={22} />
             <span className="absolute w-4 h-4 flex justify-center items-center rounded-full bg-red-500 text-white text-[10px] -right-2 -bottom-1">
-              1
+              {selectedFavoriteIds.length}
             </span>
           </div>
-
           <div className="relative cursor-pointer">
             <FiShoppingBag size={22} />
-            <span className="absolute w-4 h-4 flex justify-center items-center rounded-full bg-red-500 text-white text-[10px] -right-2 -bottom-1">
-              1
+            <span className={`absolute w-4 h-4 flex justify-center items-center rounded-full bg-red-500 text-white text-[10px] -right-2 -bottom-1`}>
+              {selectedCardIds.length}
             </span>
           </div>
+          <ModeToggle />
 
           <SignedOut>
             <SignInButton>
@@ -105,16 +110,17 @@ const Navbar = () => {
         {/* Mobile Icons */}
         <div className="flex md:hidden gap-4 items-center">
           <div className="relative">
-            <FaRegHeart size={24} />
+            <FaRegHeart
+            size={24} />
             <span className="absolute w-4 h-4 flex justify-center items-center rounded-full bg-red-500 text-white text-[10px] -right-2 -bottom-1">
-              1
+              {selectedFavoriteIds.length}
             </span>
           </div>
 
           <div className="relative">
             <FiShoppingBag size={24} />
             <span className="absolute w-4 h-4 flex justify-center items-center rounded-full bg-red-500 text-white text-[10px] -right-2 -bottom-1">
-              1
+              {selectedCardIds.length}
             </span>
           </div>
 
@@ -142,18 +148,25 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {menuOpen && (
-        <div className="absolute top-[70px] left-0 w-full bg-white shadow-md flex flex-col gap-5 px-6 py-5 lg:hidden z-40 animate-slideDown">
+        <div className="absolute top-[70px] dark:bg-black  left-0 w-full bg-white shadow-md flex flex-col gap-5 px-6 py-5 lg:hidden z-40 animate-slideDown">
           {links.map((link) => (
             <Link
               key={link.name}
               href={link.href}
-              className="text-lg font-medium py-2"
+              className={`${
+              path === link.href
+                ? "text-amber-600 font-bold"
+                : "text-gray-900 dark:text-white"
+            } font-medium text-lg py-2 hover:text-orange-500 transition`}
               onClick={() => setMenuOpen(false)}
             >
               {link.name}
             </Link>
           ))}
-
+            <div className="flex gap-3 justify-start items-center">
+            <ModeToggle />
+              <span>Theme</span>
+            </div>
           {/* Mobile Search */}
           <div className="flex items-center gap-2 px-3 py-2 bg-gray-200 dark:bg-gray-800 rounded-full w-full">
             <CiSearch size={20} />
