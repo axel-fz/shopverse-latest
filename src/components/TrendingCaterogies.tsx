@@ -1,7 +1,7 @@
 "use client"
 import React from "react";
-/* import Image from "next/image";
- *//* import { FaCircleArrowRight } from "react-icons/fa6";
+import Image from "next/image";
+/* import { FaCircleArrowRight } from "react-icons/fa6";
  */import { motion } from "framer-motion";
 import {scrollIntoViewVariant } from "@/animation/variants"
 import HeaderComponent from "./HeaderComponent";
@@ -16,11 +16,11 @@ interface Category {
 
 const TrendingCategories = () => {
   const categories: Category[] = [
-    { id: 1, name: "Mobiles", imageUrl: "/trendingCategories/phone.png" },
-    { id: 2, name: "Laptops", imageUrl: "/trendingCategories/laptop.png" },
-    { id: 3, name: "Headphones", imageUrl: "/trendingCategories/headphone.png" },
-    { id: 4, name: "Monitor & TVs", imageUrl: "/trendingCategories/tv.png" },
-    { id: 5, name: "Speakers", imageUrl: "/trendingCategories/speaker.png" },
+    { id: 1, name: "Mobiles", imageUrl: "/trendingCategories/phonee.png" },
+    { id: 2, name: "Laptops", imageUrl: "/trendingCategories/laptopp.png" },
+    { id: 3, name: "Headphones", imageUrl: "/trendingCategories/headphonee.png" },
+    { id: 4, name: "Monitor & TVs", imageUrl: "/trendingCategories/tvv.png" },
+    { id: 5, name: "Speakers", imageUrl: "/trendingCategories/speakerr.png" },
   ];
 
   return (
@@ -40,7 +40,7 @@ const TrendingCategories = () => {
             key={category.id}
             className="cursor-pointer flex flex-col gap-3 items-center text-center"
           >
-            <img
+            <Image
               src={category.imageUrl}
               alt={category.name}
               width={200}

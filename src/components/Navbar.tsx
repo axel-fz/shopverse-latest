@@ -1,15 +1,24 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import { FaRegHeart } from "react-icons/fa";
 import { FiShoppingBag } from "react-icons/fi";
 import { HiMenu, HiX } from "react-icons/hi";
+import {
+  SignInButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from "@clerk/nextjs";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = React.useState(false)
+  const [scrolled, setScrolled] = useState(false);
+  const path = usePathname();
+
   const links = [
     { name: "Home", href: "/" },
     { name: "Shop", href: "/shop" },
@@ -18,24 +27,34 @@ const Navbar = () => {
   ];
 
   useEffect(() => {
-    const onScroll = () => {
-      setScrolled(window.scrollY > 50)
-    }
-    window.addEventListener("scroll", onScroll)
-    return () => window.removeEventListener("scroll", onScroll)
-  },[])
+    const onScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", onScroll);
+
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <nav className={`${scrolled? 'w-[90%] md:w-[70%]   top-10  left-[50%] -translate-x-[50%]  rounded-full  ring ring-gray-400' : 'w-full'} h-[70px]   px-5 sm:px-10 flex items-center   justify-between transition-all duration-300 shadow-sm fixed  top-0 backdrop-blur-md z-50`}>
+    <nav
+      className={`${
+        scrolled
+          ? "w-[90%] md:w-[70%] top-10 left-1/2 -translate-x-1/2 rounded-full ring ring-gray-300"
+          : "w-full top-0"
+      } fixed h-[70px] px-5 sm:px-10 flex items-center justify-between transition-all duration-300 shadow-sm backdrop-blur-md z-50`}
+    >
       {/* Logo */}
       <h1 className="font-extrabold text-2xl md:text-3xl">ShopVerse</h1>
 
       {/* Desktop Links */}
-      <div className="hidden sm:hidden  lg:flex gap-8">
+      <div className="hidden lg:flex gap-8">
         {links.map((link) => (
           <Link
             key={link.name}
             href={link.href}
-            className="font-medium hover:text-orange-500 transition"
+            className={`${
+              path === link.href
+                ? "text-amber-600 font-bold"
+                : "text-gray-900"
+            } font-medium hover:text-orange-500 transition`}
           >
             {link.name}
           </Link>
@@ -43,9 +62,9 @@ const Navbar = () => {
       </div>
 
       {/* Search + Icons */}
-      <div className="flex gap-5  items-center">
-        {/* Search (Hidden on mobile) */}
-        <div className="px-3 py-2 dark:bg-gray-800 bg-gray-200 hidden lg:flex items-center rounded-full gap-2">
+      <div className="flex gap-5 items-center">
+        {/* Desktop Search */}
+        <div className="hidden lg:flex px-3 py-2 bg-gray-200 dark:bg-gray-800 items-center rounded-full gap-2">
           <CiSearch size={20} />
           <input
             type="text"
@@ -54,33 +73,65 @@ const Navbar = () => {
           />
         </div>
 
-        {/* Icons */}
-        <div className="relative cursor-pointer hidden md:block">
-          <FaRegHeart size={22} />
-          <span className="w-3 p-[6px] h-3 rounded-full flex justify-center items-center font-bold text-xs bg-red-500 text-white absolute right-[-4px] bottom-[-2px]">
-            1
-          </span>
-        </div>
-
-        <div className="relative cursor-pointer hidden md:block">
-          <FiShoppingBag size={22} />
-          <span className="w-3 p-[6px] h-3 rounded-full flex justify-center items-center font-bold text-xs bg-red-500 text-white absolute right-[-4px] bottom-[-2px]">
-            1
-          </span>
-        </div>
-
-        {/* Icons for mobile */}
-        <div className="flex md:hidden gap-6 pt-2">
+        {/* Desktop Icons */}
+        <div className="hidden md:flex items-center gap-4">
           <div className="relative cursor-pointer">
+            <FaRegHeart size={22} />
+            <span className="absolute w-4 h-4 flex justify-center items-center rounded-full bg-red-500 text-white text-[10px] -right-2 -bottom-1">
+              1
+            </span>
+          </div>
+
+          <div className="relative cursor-pointer">
+            <FiShoppingBag size={22} />
+            <span className="absolute w-4 h-4 flex justify-center items-center rounded-full bg-red-500 text-white text-[10px] -right-2 -bottom-1">
+              1
+            </span>
+          </div>
+
+          <SignedOut>
+            <SignInButton>
+              <button className="px-4 py-2 bg-amber-600 text-white rounded-md">
+                Sign In
+              </button>
+            </SignInButton>
+          </SignedOut>
+
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
+        </div>
+
+        {/* Mobile Icons */}
+        <div className="flex md:hidden gap-4 items-center">
+          <div className="relative">
             <FaRegHeart size={24} />
-            <span className="w-3 p-[7px] h-3 rounded-full flex justify-center items-center font-bold text-xs bg-red-500 text-white absolute right-[-4px] bottom-[-2px]">1</span>
+            <span className="absolute w-4 h-4 flex justify-center items-center rounded-full bg-red-500 text-white text-[10px] -right-2 -bottom-1">
+              1
+            </span>
           </div>
-          <div className="relative cursor-pointer">
+
+          <div className="relative">
             <FiShoppingBag size={24} />
-            <span className="w-3 p-[7px] h-3 rounded-full flex justify-center items-center font-bold text-xs bg-red-500 text-white absolute right-[-4px] bottom-[-2px]">1</span>
+            <span className="absolute w-4 h-4 flex justify-center items-center rounded-full bg-red-500 text-white text-[10px] -right-2 -bottom-1">
+              1
+            </span>
           </div>
+
+          <SignedOut>
+            <SignInButton>
+              <button className="px-4 py-2 bg-amber-600 text-white rounded-md">
+                Sign In
+              </button>
+            </SignInButton>
+          </SignedOut>
+
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
         </div>
-        {/* Hamburger Icon (mobile only) */}
+
+        {/* Hamburger toggle */}
         <button
           className="lg:hidden text-3xl"
           onClick={() => setMenuOpen(!menuOpen)}
@@ -89,22 +140,22 @@ const Navbar = () => {
         </button>
       </div>
 
-      {/* Mobile menu */}
+      {/* Mobile Menu */}
       {menuOpen && (
-        <div className="absolute top-[70px] left-0 w-full bg-white z-100 shadow-md flex flex-col items-start gap-5 px-6 py-5 lg:hidden animate-slideDown pb-10">
+        <div className="absolute top-[70px] left-0 w-full bg-white shadow-md flex flex-col gap-5 px-6 py-5 lg:hidden z-40 animate-slideDown">
           {links.map((link) => (
             <Link
               key={link.name}
               href={link.href}
-              className="text-lg font-medium w-full   py-2"
+              className="text-lg font-medium py-2"
               onClick={() => setMenuOpen(false)}
             >
               {link.name}
             </Link>
           ))}
 
-          {/* Search for mobile */}
-            <div className="flex items-center gap-2 dark:bg-gray-800 bg-gray-200 px-3 py-2 rounded-full w-full">
+          {/* Mobile Search */}
+          <div className="flex items-center gap-2 px-3 py-2 bg-gray-200 dark:bg-gray-800 rounded-full w-full">
             <CiSearch size={20} />
             <input
               type="text"
