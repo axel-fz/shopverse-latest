@@ -4,7 +4,7 @@ import Navbar from "@/components/Navbar";
 import { PopularProducts } from "@/components/PopularProducts";
 import TrendingCterogies from "@/components/TrendingCaterogies";
 
-const page = () => {
+const Page = () => {
   return (
     <div>
       <Navbar />
@@ -18,4 +18,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
