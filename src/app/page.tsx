@@ -3,7 +3,6 @@ import MainArticles from "@/components/MainArticles";
 import Navbar from "@/components/Navbar";
 import { PopularProducts } from "@/components/PopularProducts";
 import TrendingCterogies from "@/components/TrendingCaterogies";
-import React from "react";
 
 const page = () => {
   return (
