@@ -1,18 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import { FaRegHeart } from "react-icons/fa";
 import { FiShoppingBag } from "react-icons/fi";
 import { HiMenu, HiX } from "react-icons/hi";
-import {
-  SignInButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from "@clerk/nextjs";
+import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { useStoreFavorites } from "@/store/favorite.store";
 import { ModeToggle } from "./toggleDark";
 import { useAddtoCard } from "@/store/addToCard.store";
@@ -21,7 +16,7 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const path = usePathname();
-
+  const router = useRouter();
   const links = [
     { name: "Home", href: "/" },
     { name: "Shop", href: "/shop" },
@@ -35,9 +30,15 @@ const Navbar = () => {
 
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-  const {selectedFavoriteIds} = useStoreFavorites()
-  const {selectedCardIds} = useAddtoCard()
-  
+  const { selectedFavoriteIds } = useStoreFavorites();
+  const { selectedCardIds } = useAddtoCard();
+  const [Query, setQuery] = useState();
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!Query) return;
+    router.push(`/search?query=${Query}`);
+  };
+
   return (
     <nav
       className={`${
@@ -69,26 +70,36 @@ const Navbar = () => {
       {/* Search + Icons */}
       <div className="flex gap-5 items-center">
         {/* Desktop Search */}
-        <div className="hidden lg:flex px-3 py-2 bg-gray-200 dark:bg-gray-800 items-center rounded-full gap-2">
-          <CiSearch size={20} />
-          <input
-            type="text"
-            placeholder="Search for Phones"
-            className="bg-transparent outline-none text-sm w-32"
-          />
-        </div>
+        <form 
+        
+        onSubmit={handleSubmit}>
+          <div className="hidden lg:flex px-3 py-2 bg-gray-200 dark:bg-gray-800 items-center rounded-full gap-2">
+            <CiSearch size={20} />
+            <input
+              type="text"
+              value={Query}
+              placeholder="Search for Phones"
+              className="bg-transparent outline-none text-sm w-32"
+              onChange={(e) => setQuery(e.target.value)}
+            />
+          </div>
+        </form>
 
         {/* Desktop Icons */}
         <div className="hidden md:flex items-center gap-4">
           <div className="relative cursor-pointer">
-            <FaRegHeart  size={22} />
-            <span className="absolute w-4 h-4 flex justify-center items-center rounded-full bg-red-500 text-white text-[10px] -right-2 -bottom-1">
-              {selectedFavoriteIds.length}
-            </span>
+            <Link href={"/favorites"}>
+              <FaRegHeart size={22} />
+              <span className="absolute w-4 h-4 flex justify-center items-center rounded-full bg-red-500 text-white text-[10px] -right-2 -bottom-1">
+                {selectedFavoriteIds.length}
+              </span>
+            </Link>
           </div>
           <div className="relative cursor-pointer">
             <FiShoppingBag size={22} />
-            <span className={`absolute w-4 h-4 flex justify-center items-center rounded-full bg-red-500 text-white text-[10px] -right-2 -bottom-1`}>
+            <span
+              className={`absolute w-4 h-4 flex justify-center items-center rounded-full bg-red-500 text-white text-[10px] -right-2 -bottom-1`}
+            >
               {selectedCardIds.length}
             </span>
           </div>
@@ -110,8 +121,7 @@ const Navbar = () => {
         {/* Mobile Icons */}
         <div className="flex md:hidden gap-4 items-center">
           <div className="relative">
-            <FaRegHeart
-            size={24} />
+            <FaRegHeart size={24} />
             <span className="absolute w-4 h-4 flex justify-center items-center rounded-full bg-red-500 text-white text-[10px] -right-2 -bottom-1">
               {selectedFavoriteIds.length}
             </span>
@@ -154,19 +164,19 @@ const Navbar = () => {
               key={link.name}
               href={link.href}
               className={`${
-              path === link.href
-                ? "text-amber-600 font-bold"
-                : "text-gray-900 dark:text-white"
-            } font-medium text-lg py-2 hover:text-orange-500 transition`}
+                path === link.href
+                  ? "text-amber-600 font-bold"
+                  : "text-gray-900 dark:text-white"
+              } font-medium text-lg py-2 hover:text-orange-500 transition`}
               onClick={() => setMenuOpen(false)}
             >
               {link.name}
             </Link>
           ))}
-            <div className="flex gap-3 justify-start items-center">
+          <div className="flex gap-3 justify-start items-center">
             <ModeToggle />
-              <span>Theme</span>
-            </div>
+            <span>Theme</span>
+          </div>
           {/* Mobile Search */}
           <div className="flex items-center gap-2 px-3 py-2 bg-gray-200 dark:bg-gray-800 rounded-full w-full">
             <CiSearch size={20} />
