@@ -17,6 +17,7 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const path = usePathname();
   const router = useRouter();
+
   const links = [
     { name: "Home", href: "/" },
     { name: "Shop", href: "/shop" },
@@ -27,15 +28,18 @@ const Navbar = () => {
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", onScroll);
-
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
   const { selectedFavoriteIds } = useStoreFavorites();
   const { selectedCardIds } = useAddtoCard();
-  const [Query, setQuery] = useState();
+
+  // FIXED HERE: Query must be a string
+  const [Query, setQuery] = useState<string>("");
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!Query) return;
+    if (!Query.trim()) return;
     router.push(`/search?query=${Query}`);
   };
 
@@ -43,7 +47,7 @@ const Navbar = () => {
     <nav
       className={`${
         scrolled
-          ? "w-[90%] md:w-[70%]  top-10  left-[7%] right-[15%] md:left-[15%]  rounded-full ring ring-gray-300"
+          ? "w-[90%] md:w-[70%] top-10 left-[7%] right-[15%] md:left-[15%] rounded-full ring ring-gray-300"
           : "w-full top-0"
       } fixed h-[70px] px-5 sm:px-10 flex items-center justify-between transition-all duration-300 shadow-sm backdrop-blur-md z-50`}
     >
@@ -69,10 +73,9 @@ const Navbar = () => {
 
       {/* Search + Icons */}
       <div className="flex gap-5 items-center">
+
         {/* Desktop Search */}
-        <form 
-        
-        onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
           <div className="hidden lg:flex px-3 py-2 bg-gray-200 dark:bg-gray-800 items-center rounded-full gap-2">
             <CiSearch size={20} />
             <input
@@ -88,21 +91,21 @@ const Navbar = () => {
         {/* Desktop Icons */}
         <div className="hidden md:flex items-center gap-4">
           <div className="relative cursor-pointer">
-            <Link href={"/favorites"}>
+            <Link href="/favorites">
               <FaRegHeart size={22} />
               <span className="absolute w-4 h-4 flex justify-center items-center rounded-full bg-red-500 text-white text-[10px] -right-2 -bottom-1">
                 {selectedFavoriteIds.length}
               </span>
             </Link>
           </div>
+
           <div className="relative cursor-pointer">
             <FiShoppingBag size={22} />
-            <span
-              className={`absolute w-4 h-4 flex justify-center items-center rounded-full bg-red-500 text-white text-[10px] -right-2 -bottom-1`}
-            >
+            <span className="absolute w-4 h-4 flex justify-center items-center rounded-full bg-red-500 text-white text-[10px] -right-2 -bottom-1">
               {selectedCardIds.length}
             </span>
           </div>
+
           <ModeToggle />
 
           <SignedOut>
@@ -158,7 +161,7 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {menuOpen && (
-        <div className="absolute top-[70px] dark:bg-black  left-0 w-full bg-white shadow-md flex flex-col gap-5 px-6 py-5 lg:hidden z-40 animate-slideDown">
+        <div className="absolute top-[70px] dark:bg-black left-0 w-full bg-white shadow-md flex flex-col gap-5 px-6 py-5 lg:hidden z-40 animate-slideDown">
           {links.map((link) => (
             <Link
               key={link.name}
@@ -173,10 +176,12 @@ const Navbar = () => {
               {link.name}
             </Link>
           ))}
-          <div className="flex gap-3 justify-start items-center">
+
+          <div className="flex gap-3 items-center">
             <ModeToggle />
             <span>Theme</span>
           </div>
+
           {/* Mobile Search */}
           <div className="flex items-center gap-2 px-3 py-2 bg-gray-200 dark:bg-gray-800 rounded-full w-full">
             <CiSearch size={20} />
