@@ -7,11 +7,10 @@ import axios from "axios";
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
-const Page = () => {
+const SearchPageClient = () => {
   const queryParam = useSearchParams().get("query") || "";
   const [products, setProducts] = useState<Product[]>([]);
 
-  // Fetch products
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -26,7 +25,6 @@ const Page = () => {
     fetchProducts();
   }, []);
 
-  // Filter products based on query
   const searchResult = products.filter((product) =>
     product.title.toLowerCase().includes(queryParam.toLowerCase())
   );
@@ -38,6 +36,7 @@ const Page = () => {
         <h1 className="text-3xl font-bold mb-5">
           {`Search Results for "${queryParam}"`}
         </h1>
+
         <div className="flex gap-10 flex-wrap">
           {searchResult.length > 0 ? (
             searchResult.map((product) => (
@@ -52,4 +51,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default SearchPageClient;
